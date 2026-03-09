@@ -109,21 +109,20 @@
     }
 
     .brand-icon {
-      width: 36px;
-      height: 36px;
-      background: linear-gradient(135deg, var(--gold-400), var(--gold-600));
+      width: 40px;
+      height: 40px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(232,184,58,.25);
       border-radius: var(--radius-sm);
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      box-shadow: 0 2px 8px rgba(212,163,41,.35);
     }
 
     .brand-icon svg {
-      width: 20px;
-      height: 20px;
-      fill: var(--navy-900);
+      width: 36px;
+      height: 36px;
     }
 
     .brand-text h1 {
@@ -310,13 +309,14 @@
     /* ── GRID HELPERS ── */
     .config-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: 240px 1fr 1fr;
       gap: 20px;
+      align-items: start;
     }
 
-    .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
-    .g4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; }
+    .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+    .g4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; }
     .g2c { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 
     .field { margin-top: 12px; }
@@ -436,6 +436,7 @@
 
     @media (max-width: 1100px) {
       .config-grid { grid-template-columns: 1fr 1fr; }
+      .col-divider:nth-child(3) { grid-column: 1 / -1; }
       .col-divider { padding-left: 0; border-left: none; border-top: 1px solid var(--border-light); padding-top: 16px; }
     }
 
@@ -619,13 +620,14 @@
       border-radius: var(--radius-lg);
       background: var(--surface-0);
       margin-top: 12px;
+      -webkit-overflow-scrolling: touch;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 1260px;
-      font-size: 12.5px;
+      min-width: 900px;
+      font-size: 12px;
     }
 
     thead {
@@ -634,28 +636,28 @@
     }
 
     th {
-      padding: 10px 10px;
+      padding: 9px 7px;
       text-align: left;
-      font-size: 10px;
+      font-size: 9.5px;
       font-weight: 700;
       color: var(--text-muted);
-      letter-spacing: .8px;
+      letter-spacing: .6px;
       text-transform: uppercase;
       white-space: nowrap;
     }
 
-    th:first-child { padding-left: 14px; }
-    th:last-child { padding-right: 14px; text-align: center; }
+    th:first-child { padding-left: 12px; }
+    th:last-child { padding-right: 12px; text-align: center; }
 
     td {
-      padding: 8px 10px;
+      padding: 7px 7px;
       border-bottom: 1px solid var(--border-light);
       vertical-align: middle;
       color: var(--text-primary);
     }
 
-    td:first-child { padding-left: 14px; }
-    td:last-child { padding-right: 14px; text-align: center; }
+    td:first-child { padding-left: 12px; }
+    td:last-child { padding-right: 12px; text-align: center; }
 
     tbody tr:last-child td { border-bottom: none; }
 
@@ -663,9 +665,9 @@
 
     .table-wrapper input,
     .table-wrapper select {
-      padding: 8px 10px;
+      padding: 6px 7px;
       border-radius: var(--radius-sm);
-      font-size: 12.5px;
+      font-size: 12px;
       border-color: var(--border-mid);
     }
 
@@ -1176,6 +1178,109 @@
       font-weight: 600;
       color: var(--text-muted);
     }
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1100px) {
+      .config-grid { grid-template-columns: 1fr 1fr; }
+      .col-divider:nth-child(3) { grid-column: 1 / -1; }
+      .col-divider { padding-left: 0; border-left: none; border-top: 1px solid var(--border-light); padding-top: 16px; }
+    }
+    @media (max-width: 700px) {
+      .config-grid { grid-template-columns: 1fr; }
+      .g3 { grid-template-columns: 1fr 1fr; }
+      .g4 { grid-template-columns: 1fr 1fr; }
+      .kpi-grid { grid-template-columns: 1fr 1fr; }
+      .bottom-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── QUOTE FOOTER ── */
+    .quote-footer {
+      max-width: 1400px;
+      margin: 32px auto 120px;
+      padding: 0 20px;
+    }
+
+    .quote-card {
+      background: linear-gradient(135deg, var(--navy-800) 0%, var(--navy-900) 100%);
+      border: 1px solid rgba(232,184,58,.15);
+      border-radius: var(--radius-xl);
+      padding: 28px 36px;
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .quote-card::before {
+      content: '';
+      position: absolute;
+      top: -30px; left: -30px;
+      width: 140px; height: 140px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(232,184,58,.08), transparent 70%);
+      pointer-events: none;
+    }
+
+    .quote-card::after {
+      content: '';
+      position: absolute;
+      bottom: -20px; right: 40px;
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(45,86,160,.15), transparent 70%);
+      pointer-events: none;
+    }
+
+    .quote-mark {
+      font-size: 64px;
+      line-height: 1;
+      color: var(--gold-400);
+      opacity: .35;
+      font-family: Georgia, serif;
+      flex-shrink: 0;
+      margin-top: -8px;
+      user-select: none;
+    }
+
+    .quote-content { flex: 1; }
+
+    .quote-text {
+      font-size: 14.5px;
+      line-height: 1.65;
+      color: rgba(255,255,255,.85);
+      font-style: italic;
+      font-weight: 400;
+      letter-spacing: .1px;
+    }
+
+    .quote-attribution {
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .quote-line {
+      width: 24px;
+      height: 1px;
+      background: var(--gold-400);
+      opacity: .6;
+    }
+
+    .quote-author {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--gold-300);
+      letter-spacing: .8px;
+      text-transform: uppercase;
+    }
+
+    .quote-cintamani {
+      flex-shrink: 0;
+      opacity: .18;
+      align-self: center;
+    }
+
   </style>
 
 </head>
@@ -1189,8 +1294,14 @@
     <div class="header-top">
       <div class="header-brand">
         <div class="brand-icon">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          <!-- Çintamani – three circles in triangle formation, classic Ottoman motif -->
+          <svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
+            <circle cx="18" cy="10" r="6.5" fill="rgba(255,255,255,0)" stroke="#e8b83a" stroke-width="2.2"/>
+            <circle cx="18" cy="10" r="2.8" fill="#e8b83a"/>
+            <circle cx="11" cy="22" r="6.5" fill="rgba(255,255,255,0)" stroke="#e8b83a" stroke-width="2.2"/>
+            <circle cx="11" cy="22" r="2.8" fill="#e8b83a"/>
+            <circle cx="25" cy="22" r="6.5" fill="rgba(255,255,255,0)" stroke="#e8b83a" stroke-width="2.2"/>
+            <circle cx="25" cy="22" r="2.8" fill="#e8b83a"/>
           </svg>
         </div>
         <div class="brand-text">
@@ -2046,18 +2157,18 @@ function rowTemplate(id, preset){
   const prod=preset?.prod||'TERM', ccy=preset?.ccy||'TL';
   const delTxt=I18N[L()].del, autoTxt=I18N[L()].auto, renewLbl=I18N[L()].renewEvery;
   return `<tr data-id="${id}">
-    <td style="min-width:110px;"><input type="text" inputmode="decimal" id="amt_${id}" value="0"></td>
-    <td style="min-width:145px;"><select id="prod_${id}">${buildProductOptionsHTML()}</select></td>
-    <td style="min-width:90px;"><select id="ccy_${id}">${buildCurrencyOptionsHTML()}</select></td>
-    <td style="min-width:80px;"><input type="number" step="0.01" id="rate_${id}" value="0"></td>
-    <td style="min-width:180px;">
+    <td style="min-width:90px;"><input type="text" inputmode="decimal" id="amt_${id}" value="0"></td>
+    <td style="min-width:110px;"><select id="prod_${id}">${buildProductOptionsHTML()}</select></td>
+    <td style="min-width:72px;"><select id="ccy_${id}">${buildCurrencyOptionsHTML()}</select></td>
+    <td style="min-width:62px;"><input type="number" step="0.01" id="rate_${id}" value="0"></td>
+    <td style="min-width:130px;">
       <select id="method_${id}">${buildMethodOptionsHTML(prod,ccy)}</select>
       <div class="renew-wrap" id="renewWrap_${id}" hidden>
         <span>${renewLbl}</span>
         <input type="number" id="renewEvery_${id}" min="1" step="1" value="2">
       </div>
     </td>
-    <td style="min-width:100px;">
+    <td style="min-width:90px;">
       <div class="tax-wrap">
         <input type="number" step="0.01" id="tax_${id}" value="0">
         <label class="auto-label"><input type="checkbox" id="taxAuto_${id}" checked>${autoTxt}</label>
@@ -3035,7 +3146,55 @@ document.getElementById('eurtry_end').addEventListener('input', updateScenarioIn
 applyLang();
 resetAll();
 setTimeout(updateScenarioInsightBar, 100);
+
+/* ── QUOTE LANG ── */
+(function(){
+  const QUOTES = {
+    tr: {
+      text: "Paranın tek bir amacı vardır: sizi, olmak istediğiniz kişiye daha yakın getirmek. Yatırımın görevi ise onu güvenle oraya taşımaktır.",
+      author: "Özel Bankacılık İlkesi"
+    },
+    en: {
+      text: "Money has only one purpose: to bring you closer to who you want to be. The role of investment is to carry it there — safely.",
+      author: "Private Banking Principle"
+    }
+  };
+  function updateQuote(){
+    const l = document.getElementById('lang').value || 'tr';
+    const q = QUOTES[l] || QUOTES.tr;
+    const el = document.getElementById('quote_text');
+    const au = document.getElementById('quote_author');
+    if(el) el.textContent = q.text;
+    if(au) au.textContent = q.author;
+  }
+  document.getElementById('lang').addEventListener('change', updateQuote);
+  updateQuote();
+})();
 </script>
+
+<!-- QUOTE FOOTER -->
+
+<div class="quote-footer">
+  <div class="quote-card">
+    <div class="quote-mark">"</div>
+    <div class="quote-content">
+      <div class="quote-text" id="quote_text">Paranın tek bir amacı vardır: sizi, olmak istediğiniz kişiye daha yakın getirmek. Yatırımın görevi ise onu güvenle oraya taşımaktır.</div>
+      <div class="quote-attribution">
+        <div class="quote-line"></div>
+        <div class="quote-author" id="quote_author">Özel Bankacılık İlkesi</div>
+      </div>
+    </div>
+    <!-- Çintamani watermark inside quote -->
+    <svg class="quote-cintamani" viewBox="0 0 80 80" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="40" cy="22" r="14" fill="none" stroke="#e8b83a" stroke-width="3"/>
+      <circle cx="40" cy="22" r="5.5" fill="#e8b83a"/>
+      <circle cx="23" cy="52" r="14" fill="none" stroke="#e8b83a" stroke-width="3"/>
+      <circle cx="23" cy="52" r="5.5" fill="#e8b83a"/>
+      <circle cx="57" cy="52" r="14" fill="none" stroke="#e8b83a" stroke-width="3"/>
+      <circle cx="57" cy="52" r="5.5" fill="#e8b83a"/>
+    </svg>
+  </div>
+</div>
 
 </body>
 </html>
