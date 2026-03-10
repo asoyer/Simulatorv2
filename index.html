@@ -316,30 +316,21 @@
     .field:first-child { margin-top: 0; }
 
     /* ── CONFIG PANEL ── */
-    /* Satır 1: 3 kolon yan yana */
     .cfg-top {
       display: grid;
-      grid-template-columns: 1fr 1px 1fr 1px 1fr;
+      grid-template-columns: repeat(3, 1fr);
       gap: 0;
       align-items: start;
     }
 
     .cfg-col {
-      padding: 4px 20px 4px 0;
+      padding: 0 20px;
     }
-    .cfg-col:last-child {
-      padding-right: 0;
-      padding-left: 20px;
-    }
-    .cfg-col:nth-child(3) {
-      padding: 4px 20px;
-    }
+    .cfg-col:first-child { padding-left: 0; }
+    .cfg-col:last-child  { padding-right: 0; }
 
-    .cfg-sep {
-      background: var(--border-light);
-      width: 1px;
-      align-self: stretch;
-      margin: 4px 0;
+    .cfg-col-border {
+      border-left: 1px solid var(--border-light);
     }
 
     /* Satır 2: Getiriler + Aksiyonlar */
@@ -353,14 +344,11 @@
       flex-wrap: wrap;
     }
 
-    .cfg-bottom-left {
-      flex: 1;
-      min-width: 0;
-    }
+    .cfg-bottom-left { flex: 1; min-width: 0; }
 
     .cfg-carry-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(100px, 160px));
+      grid-template-columns: repeat(3, minmax(80px, 160px));
       gap: 10px;
     }
 
@@ -369,23 +357,19 @@
       gap: 8px;
       flex-shrink: 0;
       flex-wrap: wrap;
+      align-self: flex-end;
     }
 
-    /* Responsive */
-    @media (max-width: 900px) {
+    @media (max-width: 860px) {
       .cfg-top { grid-template-columns: 1fr; }
-      .cfg-sep { display: none; }
-      .cfg-col, .cfg-col:last-child, .cfg-col:nth-child(3) {
-        padding: 12px 0 0 0;
-        border-top: 1px solid var(--border-light);
-      }
-      .cfg-col:first-child { border-top: none; padding-top: 0; }
+      .cfg-col, .cfg-col:first-child, .cfg-col:last-child { padding: 12px 0 0 0; }
+      .cfg-col-border { border-left: none; border-top: 1px solid var(--border-light); }
+      .cfg-col:first-child { padding-top: 0; }
       .cfg-carry-grid { grid-template-columns: repeat(3, 1fr); }
     }
 
     @media (max-width: 600px) {
       .g3 { grid-template-columns: 1fr 1fr; }
-      .cfg-carry-grid { grid-template-columns: 1fr 1fr 1fr; }
       .kpi-grid { grid-template-columns: 1fr 1fr; }
     }
 
@@ -1332,10 +1316,8 @@
     <div class="status-note" id="txt_tenor_note">Vade bir kez seçilir → tüm satırlara uygulanır.</div>
   </div>
 
-  <div class="cfg-sep"></div>
-
   <!-- Başlangıç Kurları -->
-  <div class="cfg-col">
+  <div class="cfg-col cfg-col-border">
     <div class="section-label" id="sec2">Başlangıç Kurları (Spot)</div>
     <div class="g3">
       <div>
@@ -1359,10 +1341,8 @@
     <div class="status-note" id="txt_rate_note">Kaynak engellenirse USD/EUR alternatif kaynaktan gelir; altın manuel olabilir.</div>
   </div>
 
-  <div class="cfg-sep"></div>
-
   <!-- Vade Sonu Kurları -->
-  <div class="cfg-col">
+  <div class="cfg-col cfg-col-border">
     <div class="section-label" id="sec3">Vade Sonu Kurları (Oto)</div>
     <div class="g2">
       <div>
