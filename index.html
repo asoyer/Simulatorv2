@@ -308,10 +308,61 @@
 
     /* ── GRID HELPERS ── */
     .config-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Top row: Client Assets + Spot Rates side by side */
+    .config-row-top {
       display: grid;
-      grid-template-columns: 240px 1fr 1fr;
-      gap: 20px;
+      grid-template-columns: 280px 1fr;
+      gap: 0;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    .config-col {
+      padding: 16px;
+      background: var(--surface-0);
+    }
+
+    .config-col + .config-col {
+      border-left: 1px solid var(--border-light);
+    }
+
+    /* Bottom row: End Rates full width */
+    .config-row-bottom {
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--surface-0);
+      padding: 16px;
+    }
+
+    .config-row-bottom .end-rates-inner {
+      display: grid;
+      grid-template-columns: 180px 1fr 1fr;
+      gap: 16px;
       align-items: start;
+    }
+
+    .config-row-bottom .end-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 900px) {
+      .config-row-top { grid-template-columns: 1fr; }
+      .config-col + .config-col { border-left: none; border-top: 1px solid var(--border-light); }
+      .config-row-bottom .end-rates-inner { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .config-row-bottom .end-rates-inner { grid-template-columns: 1fr; }
     }
 
     .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -428,23 +479,8 @@
       line-height: 1.4;
     }
 
-    /* ── DIVIDER ── */
-    .col-divider {
-      border-left: 1px solid var(--border-light);
-      padding-left: 20px;
-    }
-
-    @media (max-width: 1100px) {
-      .config-grid { grid-template-columns: 1fr 1fr; }
-      .col-divider:nth-child(3) { grid-column: 1 / -1; }
-      .col-divider { padding-left: 0; border-left: none; border-top: 1px solid var(--border-light); padding-top: 16px; }
-    }
-
-    @media (max-width: 700px) {
-      .config-grid { grid-template-columns: 1fr; }
-      .g3 { grid-template-columns: 1fr 1fr; }
-      .g4 { grid-template-columns: 1fr 1fr; }
-    }
+    /* ── DIVIDER (legacy, kept for col borders via config-col) ── */
+    .col-divider { /* no-op — layout now uses config-col */ }
 
     /* ── HEADLINE KPI ── */
     .headline-kpi {
@@ -1178,14 +1214,8 @@
       font-weight: 600;
       color: var(--text-muted);
     }
-    /* ── RESPONSIVE ── */
-    @media (max-width: 1100px) {
-      .config-grid { grid-template-columns: 1fr 1fr; }
-      .col-divider:nth-child(3) { grid-column: 1 / -1; }
-      .col-divider { padding-left: 0; border-left: none; border-top: 1px solid var(--border-light); padding-top: 16px; }
-    }
+    /* ── EXTRA RESPONSIVE ── */
     @media (max-width: 700px) {
-      .config-grid { grid-template-columns: 1fr; }
       .g3 { grid-template-columns: 1fr 1fr; }
       .g4 { grid-template-columns: 1fr 1fr; }
       .kpi-grid { grid-template-columns: 1fr 1fr; }
@@ -1330,141 +1360,154 @@
 
   <!-- CONFIGURATION PANEL -->
 
-  <div class="card">
-    <div class="config-grid">
+  <div class="card" style="padding:0; overflow:hidden; background:var(--surface-1);">
+    <div class="config-grid" style="gap:1px;">
 
 ```
-  <!-- COL 1: Client Assets -->
-  <div>
-    <div class="section-label" id="sec1">Müşteri Varlığı</div>
+  <!-- ROW 1: Client Assets + Spot Rates -->
+  <div class="config-row-top">
 
-    <div class="field">
-      <label id="lbl_total">Toplam Varlık</label>
-      <input id="total_amount" type="text" inputmode="decimal" value="1.000.000" />
+    <!-- COL 1: Client Assets -->
+    <div class="config-col">
+      <div class="section-label" id="sec1">Müşteri Varlığı</div>
+
+      <div class="field">
+        <label id="lbl_total">Toplam Varlık</label>
+        <input id="total_amount" type="text" inputmode="decimal" value="1.000.000" />
+      </div>
+
+      <div class="g2" style="margin-top:12px;">
+        <div>
+          <label id="lbl_principal">Giriş PB</label>
+          <select id="total_ccy">
+            <option value="USD" selected>USD</option>
+            <option value="TL">TL</option>
+            <option value="EUR">EUR</option>
+            <option value="XAUg">Altın (g)</option>
+          </select>
+        </div>
+        <div>
+          <label id="lbl_report">Rapor PB</label>
+          <select id="report_ccy">
+            <option value="TL" selected>TL</option>
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="XAUg">Altın (g)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="g2" style="margin-top:10px;">
+        <div>
+          <label id="lbl_ttype">Vade Tipi</label>
+          <select id="tenor_type">
+            <option value="DAYS" selected>Gün</option>
+            <option value="MONTHS">Ay</option>
+          </select>
+        </div>
+        <div>
+          <label id="lbl_tval">Vade</label>
+          <input id="tenor_val" type="number" step="1" value="32" />
+        </div>
+      </div>
+      <div class="status-note" id="txt_tenor_note">Vade bir kez seçilir → tüm satırlara uygulanır.</div>
     </div>
 
-    <div class="g2" style="margin-top:12px;">
-      <div>
-        <label id="lbl_principal">Giriş Para Birimi</label>
-        <select id="total_ccy">
-          <option value="USD" selected>USD</option>
-          <option value="TL">TL</option>
-          <option value="EUR">EUR</option>
-          <option value="XAUg">Altın (gram)</option>
-        </select>
-      </div>
-      <div>
-        <label id="lbl_report">Rapor Para Birimi</label>
-        <select id="report_ccy">
-          <option value="TL" selected>TL</option>
-          <option value="USD">USD</option>
-          <option value="EUR">EUR</option>
-          <option value="XAUg">Altın (gram)</option>
-        </select>
-      </div>
-    </div>
+    <!-- COL 2: Spot Rates -->
+    <div class="config-col">
+      <div class="section-label" id="sec2">Başlangıç Kurları (Spot)</div>
 
-    <div class="g2" style="margin-top:12px;">
-      <div>
-        <label id="lbl_ttype">Vade Tipi</label>
-        <select id="tenor_type">
-          <option value="DAYS" selected>Gün</option>
-          <option value="MONTHS">Ay</option>
-        </select>
+      <div class="g3">
+        <div>
+          <label id="lbl_gold_spot">Altın (g/TRY)</label>
+          <input id="xautry_g" type="number" step="0.01" value="0" />
+        </div>
+        <div>
+          <label>USD/TRY</label>
+          <input id="usdtry" type="number" step="0.0001" value="0" />
+        </div>
+        <div>
+          <label>EUR/TRY</label>
+          <input id="eurtry" type="number" step="0.0001" value="0" />
+        </div>
       </div>
-      <div>
-        <label id="lbl_tval">Vade</label>
-        <input id="tenor_val" type="number" step="1" value="32" />
+
+      <div class="btn-row" style="margin-top:12px;">
+        <button class="btn btn-gold btn-sm" id="btn_rates">Kurları Çek</button>
+        <button class="btn btn-ghost btn-sm" id="btn_use_manual">Manuel Kur</button>
       </div>
+
+      <div class="status-line" id="rate_status"></div>
+      <div class="status-note" id="txt_rate_note">Kaynak engellenirse USD/EUR alternatif kaynaktan gelir; altın manuel olabilir.</div>
     </div>
-    <div class="status-note" id="txt_tenor_note">Vade bir kez seçilir → tüm satırlara otomatik uygulanır.</div>
   </div>
 
-  <!-- COL 2: Spot Rates -->
-  <div class="col-divider">
-    <div class="section-label" id="sec2">Başlangıç Kurları (Spot)</div>
+  <!-- ROW 2: End Rates — full width -->
+  <div class="config-row-bottom">
+    <div class="section-label" id="sec3">Vade Sonu Kurları (Oto)</div>
 
-    <div class="g3">
+    <div class="end-rates-inner">
+      <!-- Sub-col A: mode + gold exp -->
       <div>
-        <label id="lbl_gold_spot">Altın (g/TRY)</label>
-        <input id="xautry_g" type="number" step="0.01" value="0" />
+        <div>
+          <label id="lbl_end_mode">Kur Modu</label>
+          <select id="end_mode">
+            <option value="SPOT" selected>Spot = Vade Sonu</option>
+            <option value="FWD">Forward (getiri farkı)</option>
+            <option value="MANUAL">Manuel</option>
+          </select>
+        </div>
+        <div style="margin-top:10px;">
+          <label id="lbl_gold_exp">Altın Beklenti (%/yıl)</label>
+          <input id="gold_exp" type="number" step="0.01" value="0" />
+        </div>
       </div>
+
+      <!-- Sub-col B: end rate inputs -->
       <div>
-        <label>USD/TRY</label>
-        <input id="usdtry" type="number" step="0.0001" value="0" />
+        <div class="g3">
+          <div>
+            <label id="lbl_gold_end">Altın – <span id="lbl_end_vs">Vade</span></label>
+            <input id="xautry_g_end" type="number" step="0.01" value="" placeholder="oto" />
+          </div>
+          <div>
+            <label>USD/TRY – <span id="lbl_end">Vade</span></label>
+            <input id="usdtry_end" type="number" step="0.0001" value="" placeholder="oto" />
+          </div>
+          <div>
+            <label>EUR/TRY – <span id="lbl_end2">Vade</span></label>
+            <input id="eurtry_end" type="number" step="0.0001" value="" placeholder="oto" />
+          </div>
+        </div>
       </div>
+
+      <!-- Sub-col C: carry rates -->
       <div>
-        <label>EUR/TRY</label>
-        <input id="eurtry" type="number" step="0.0001" value="0" />
+        <div class="g3">
+          <div>
+            <label id="lbl_rtl">TL (%/yıl)</label>
+            <input id="rtl" type="number" step="0.01" value="45" />
+          </div>
+          <div>
+            <label id="lbl_rusd">USD (%/yıl)</label>
+            <input id="rusd" type="number" step="0.01" value="5" />
+          </div>
+          <div>
+            <label id="lbl_reur">EUR (%/yıl)</label>
+            <input id="reur" type="number" step="0.01" value="3" />
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="btn-row" style="margin-top:12px;">
-      <button class="btn btn-gold btn-sm" id="btn_rates" id="btn_rates">Kurları Çek</button>
-      <button class="btn btn-ghost btn-sm" id="btn_use_manual">Manuel Kur</button>
-    </div>
-
-    <div class="status-line" id="rate_status"></div>
-    <div class="status-note" id="txt_rate_note">Kaynak engellenirse USD/EUR alternatif kaynaktan gelir; altın manuel olabilir.</div>
-  </div>
-
-  <!-- COL 3: End Rates -->
-  <div class="col-divider">
-    <div class="section-label" id="sec3">Vade Sonu Kurları</div>
-
-    <div class="g2">
-      <div>
-        <label id="lbl_end_mode">Vade Sonu Kur Modu</label>
-        <select id="end_mode">
-          <option value="SPOT" selected>Spot = Vade Sonu</option>
-          <option value="FWD">Forward (getiri farkı)</option>
-          <option value="MANUAL">Manuel</option>
-        </select>
-      </div>
-      <div>
-        <label id="lbl_gold_exp">Altın Beklenti (%/yıl)</label>
-        <input id="gold_exp" type="number" step="0.01" value="0" />
-      </div>
-    </div>
-
-    <div class="g3" style="margin-top:12px;">
-      <div>
-        <label id="lbl_gold_end">Altın – <span id="lbl_end_vs">Vade Sonu</span></label>
-        <input id="xautry_g_end" type="number" step="0.01" value="" placeholder="oto" />
-      </div>
-      <div>
-        <label>USD/TRY – <span id="lbl_end">Vade</span></label>
-        <input id="usdtry_end" type="number" step="0.0001" value="" placeholder="oto" />
-      </div>
-      <div>
-        <label>EUR/TRY – <span id="lbl_end2">Vade</span></label>
-        <input id="eurtry_end" type="number" step="0.0001" value="" placeholder="oto" />
-      </div>
-    </div>
-
-    <div class="g3" style="margin-top:12px;">
-      <div>
-        <label id="lbl_rtl">TL Getiri (%/yıl)</label>
-        <input id="rtl" type="number" step="0.01" value="45" />
-      </div>
-      <div>
-        <label id="lbl_rusd">USD Getiri (%/yıl)</label>
-        <input id="rusd" type="number" step="0.01" value="5" />
-      </div>
-      <div>
-        <label id="lbl_reur">EUR Getiri (%/yıl)</label>
-        <input id="reur" type="number" step="0.01" value="3" />
-      </div>
-    </div>
-
-    <div class="btn-row" style="margin-top:12px;">
-      <button class="btn btn-ghost btn-sm" id="btn_fill_end" style="flex:1;">Vade Sonu Kurları Doldur</button>
-      <button class="btn btn-primary btn-sm" id="btn_calc_top" style="flex:1;">Hesapla</button>
+    <div class="end-actions">
+      <button class="btn btn-ghost btn-sm" id="btn_fill_end">Vade Sonu Kurları Doldur</button>
+      <button class="btn btn-primary btn-sm" id="btn_calc_top">Hesapla</button>
       <button class="btn btn-danger btn-sm" id="btn_reset_top">Sıfırla</button>
     </div>
-
-    <div class="status-note" id="end_note" style="margin-top:8px;"></div>
+    <div class="status-note" id="end_note" style="margin-top:6px;"></div>
   </div>
+
 </div>
 ```
 
